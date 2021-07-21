@@ -1,27 +1,16 @@
 const mongoose = require('mongoose');
 require('mongoose-type-email');
+const Person = require("./person.js");
 let Schema = mongoose.Schema;
 
 let userSchema = new Schema({
-    firstName: {
+    contactInfo: {
+        type: Person,
+        require: true
+    },
+    role: {
         type: String,
-        required: true
-    },
-    lastName: {
-        type: String,
-        required: true
-    },
-    phoneNumber: {
-        type: Number,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true
-    },
-    admin: {
-        type: Boolean,
-        default: false
+        require: true
     }
 }, {
     timestamps: true

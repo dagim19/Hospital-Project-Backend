@@ -1,24 +1,21 @@
 let mongoose = require("mongoose");
 let Schema = mongoose.Schema;
+let Person = require("./person.js");
 require("mongoose-type-email");
 
 let doctorSchema = new Schema(
   {
-    firstName: {
-      type: String,
-      required: true,
+    contactInfo: {
+      type: Person,
+      require: true
     },
-    lastName: {
-      type: String,
-      required: true,
+    intern: {
+      type: Boolean,
+      default: false
     },
-    phoneNumber: {
-      type: Number,
-      required: true,
-    },
-    email: {
-      type: mongoose.SchemaTypes.Email,
-      require: true,
+    partime: {
+      type: Boolean,
+      default: false
     },
     speciality: {
       type: String,

@@ -18,6 +18,18 @@ let transporter = nodemailer.createTransport({
   },
 });
 
+let emergencyData = {
+  firstName: "emergency",
+  lastName: "emergency",
+  gender: "emergency",
+  age: "18",
+  phoneNumber: "000000000",
+  email: "emergency@gmail.com",
+  nationality: "emergency",
+  city: "emergency",
+  address: "emergency",
+}
+
 patientsRouter
   .route("/")
   .get(async (req, res, next) => {
@@ -50,12 +62,15 @@ patientsRouter
 patientsRouter
   .route("/register")
   .post(async (req, res, next) => {
-    console.log(req.body);
-    let patient = new Patients(req.body);
+    let data = req.body;
+    if (data.emergency == 'true') {
+      data.contactInfo = emergencyData;
+    }
+    let patient = new Patients(data);
 
     try {
       await patient.save();
-      let emailAdd = patient.email;
+      let emailAdd = patient.contactInfo.email;
       let formattedDate =
         patient.createdAt.getFullYear() +
         "-" +
@@ -140,5 +155,52 @@ patientsRouter
       next(err);
     }
   });
+
+patientsRouter
+  .route("/:patientId/contactInfo")
+  .get(async (req, res, next) => {
+    try {
+      const patientFound = await Patients.findById(req.params.patientId);
+      const contactInfo = patientFound.contactInfo;
+      res.status(200);
+      res.type("json");
+      res.json(contactInfo);
+    } catch (err) {
+      console.log(`There is an error at /:patientId route GET request ${err}`);
+      next(err);
+    }
+  })
+  .post((req, res, next) => {
+    res.status(403);
+    res.type("text");
+    res.end("Post method is not supported");
+  })
+  .put(async (req, res, next) => {
+    try {
+      data = await Patients.findOneAndUpdate(
+        req.params.patientId,
+        { $set: req.body },
+        { new: true }
+      );
+      res.status(200);
+      res.type("json");
+      res.json(data);
+    } catch (err) {
+      console.log(`There is an error updating your document: ${err}`);
+      next(err);
+    }
+  })
+  .delete(async (req, res, next) => {
+    try {
+      await Patients.findOneAndRemove({ _id: req.params.patientId });
+      res.status = 200;
+      res.redirect("/patients");
+    } catch (err) {
+      console.log(`There was an error removing your document`);
+      next(err);
+    }
+  });
+
+
 
 module.exports = patientsRouter;

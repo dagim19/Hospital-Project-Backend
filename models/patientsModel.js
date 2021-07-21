@@ -1,48 +1,23 @@
 let mongoose = require("mongoose");
 let Schema = mongoose.Schema;
+let Person = require("./person.js");
+console.log(`Person: ${Person}`);
 require("mongoose-type-email");
 require("mongoose-type-phone");
 let patientSchema = new Schema(
   {
-    firstName: {
-      type: String,
-      required: true,
+    contactInfo: {
+      type: Person,
+      require: true
     },
-    lastName: {
-      type: String,
-      required: true,
+    emergency: {
+      type: Boolean,
+      default: false
     },
-    gender: {
-      type: String,
-      required: true,
-    },
-    age: {
-      type: Number,
-      required: true,
-    },
-    symptoms: {
-      type: String,
-    },
-    phoneNumber: {
-      type: Number,
-      required: true,
-    },
-    email: {
-      type: mongoose.SchemaTypes.Email,
-      required: true,
-    },
-    nationality: {
-      type: String,
-      required: true,
-    },
-    address: {
-      type: String,
-      required: true,
-    },
-    city: {
-      type: String,
-      required: true,
-    },
+    critical: {
+      type: Boolean,
+      default: false
+    }
   },
   {
     timestamps: true,

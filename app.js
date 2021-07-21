@@ -1,17 +1,15 @@
-let createError = require("http-errors");
-let express = require("express");
-let path = require("path");
-let cookieParser = require("cookie-parser");
-let logger = require("morgan");
-let mongoose = require("mongoose");
-let cors = require("cors");
-let indexRouter = require("./routes/index");
-let usersRouter = require("./routes/users");
-let doctorsRouter = require("./routes/doctorsRouter");
-let patientsRouter = require("./routes/patientsRouter");
-
+const createError = require("http-errors");
+const express = require("express");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const usersRouter = require("./routes/users");
+const doctorsRouter = require("./routes/doctorsRouter");
+const patientsRouter = require("./routes/patientsRouter");
 const dotenv = require("dotenv");
 dotenv.config();
+
 /*Connecting to our database*/
 let connectToDatabase = async (uri) => {
   console.log(`Uri: ${uri}`);
@@ -23,23 +21,21 @@ let connectToDatabase = async (uri) => {
   }
 };
 
+//Connecting to our database using our custom made function;
 connectToDatabase(process.env.URI);
 
+// Initializing our express app
 let app = express();
-
-// view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "pug");
-app.use(cors());
-
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(cors());
+// app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
+
+//Handling different types of routes
 app.use("/users", usersRouter);
 app.use("/patients", patientsRouter);
 app.use("/doctors", doctorsRouter);
@@ -57,7 +53,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.sendStatus(res.status);
 });
 
 module.exports = app;
