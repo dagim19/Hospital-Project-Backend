@@ -16,9 +16,18 @@ doctorsRouter
             res.json(doctors);
         } catch (err) {
             console.log(`There is an error at /doctors ${err}`);
-            next(err);
+            res.sendStatus(500);
         }
-    });
+    })
+    .post((req, res, next) => {
+        res.sendStatus(405)
+    })
+    .put((req, res, next) => {
+        res.sendStatus(405);
+    })
+    .delete((req, res, next) => {
+        res.sendStatus(405);
+    });;
 
 doctorsRouter
     .route("/register")
@@ -27,6 +36,8 @@ doctorsRouter
         let doctor = new Doctors(req.body);
         try {
             await doctor.save();
+            res.status(200);
+            res.type("json");
             res.json(doctor);
         } catch (err) {
             console.log(err);

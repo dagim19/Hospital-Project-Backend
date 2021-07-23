@@ -40,23 +40,17 @@ patientsRouter
       res.json(patients);
     } catch (err) {
       console.log(`There is an error at /patients ${err}`);
-      next(err);
+      res.sendStatus(500);
     }
   })
   .post((req, res, next) => {
-    res.status(403);
-    res.type(json);
-    res.json("Post is not allowed!");
+    res.sendStatus(405)
   })
   .put((req, res, next) => {
-    res.status(403);
-    res.type("text");
-    res.json("Put is not allowed!");
+    res.sendStatus(405);
   })
   .delete((req, res, next) => {
-    res.status(403);
-    res.type("text");
-    res.end("Delete is not allowed!");
+    res.sendStatus(405);
   });
 
 patientsRouter
@@ -97,20 +91,23 @@ patientsRouter
           console.log("Email sent successfully");
         }
       });
+      res.status(200);
+      res.type("json");
       res.json(patient);
       //res.redirect("/patients");
     } catch (err) {
       console.log(
         `There is an error /patients/register route PUT method ${err}`
       );
-      res.json(err);
+      res.sendStatus(400);
     }
   })
   .put((req, res, next) => {
-    res.status(200);
-    res.type("text");
-    res.end("Put is not supported");
-  });
+    res.sendStatus(405);
+  })
+  .delete((req, res, next) => {
+    res.sendStatus(405);
+  })
 
 patientsRouter
   .route("/:patientId")
@@ -122,7 +119,7 @@ patientsRouter
       res.json(patientFound);
     } catch (err) {
       console.log(`There is an error at /:patientId route GET request ${err}`);
-      next(err);
+      res.sendStatus(400);
     }
   })
   .post((req, res, next) => {

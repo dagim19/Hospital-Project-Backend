@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "test": "mocha -u tdd"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -20,5 +21,10 @@
     "nodemailer": "^6.6.2",
     "nodemon": "^2.0.9",
     "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "suite": "^0.2.0"
   }
 }
